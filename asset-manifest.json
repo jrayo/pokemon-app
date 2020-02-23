@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/pokemon-app/static/css/main.5ecd60fb.chunk.css",
-    "main.js": "/pokemon-app/static/js/main.8b0f636a.chunk.js",
-    "main.js.map": "/pokemon-app/static/js/main.8b0f636a.chunk.js.map",
+    "main.js": "/pokemon-app/static/js/main.aacce335.chunk.js",
+    "main.js.map": "/pokemon-app/static/js/main.aacce335.chunk.js.map",
     "runtime-main.js": "/pokemon-app/static/js/runtime-main.f7120cdf.js",
     "runtime-main.js.map": "/pokemon-app/static/js/runtime-main.f7120cdf.js.map",
     "static/css/2.67123b20.chunk.css": "/pokemon-app/static/css/2.67123b20.chunk.css",
     "static/js/2.40210b4f.chunk.js": "/pokemon-app/static/js/2.40210b4f.chunk.js",
     "static/js/2.40210b4f.chunk.js.map": "/pokemon-app/static/js/2.40210b4f.chunk.js.map",
     "index.html": "/pokemon-app/index.html",
-    "precache-manifest.3e61b5305c055c4a10771f6cb810a7c7.js": "/pokemon-app/precache-manifest.3e61b5305c055c4a10771f6cb810a7c7.js",
+    "precache-manifest.b0d53b9f92731af2c3057f44b4106ef7.js": "/pokemon-app/precache-manifest.b0d53b9f92731af2c3057f44b4106ef7.js",
     "service-worker.js": "/pokemon-app/service-worker.js",
     "static/css/2.67123b20.chunk.css.map": "/pokemon-app/static/css/2.67123b20.chunk.css.map",
     "static/css/main.5ecd60fb.chunk.css.map": "/pokemon-app/static/css/main.5ecd60fb.chunk.css.map",
@@ -39,6 +39,6 @@
     "static/css/2.67123b20.chunk.css",
     "static/js/2.40210b4f.chunk.js",
     "static/css/main.5ecd60fb.chunk.css",
-    "static/js/main.8b0f636a.chunk.js"
+    "static/js/main.aacce335.chunk.js"
   ]
 }
