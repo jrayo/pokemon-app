@@ -276,15 +276,16 @@ const PokemonDetail = ({ id, name }) => {
                                     <div className="container-fluid">
                                         <div className="row">
                                             <div className="col-md-2">
-                                            <h6 className="progress_title">{_.capitalize(stat.stat.name.replace('-',' '))}</h6>
+                                            <span className="progress_title">{_.capitalize(stat.stat.name.replace('-',' '))}</span>
                                             </div>
                                             <div className="col-md-10 align-self-center">
                                             <span className="progress">
-                                                                                    <span className={progressBarColor} role="progressbar" style={{width: stat.base_stat+"%"}} aria-valuenow={stat.base_stat} aria-valuemin="0" aria-valuemax="100">
-                                                                                        {stat.base_stat}
-                                                                                    </span>
-                                                                                </span>
+                                                <span className={progressBarColor} role="progressbar" style={{width: stat.base_stat+"%"}} aria-valuenow={stat.base_stat} aria-valuemin="0" aria-valuemax="100">
+                                                    {stat.base_stat}
+                                                </span>
+                                                </span>
                                             </div>
+                                            
                                         </div>  
                                         </div>
                                 </React.Fragment>

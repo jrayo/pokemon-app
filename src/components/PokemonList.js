@@ -57,6 +57,15 @@ const SearchBar = styled.input`
     border-radius:50px;
 `
 
+const TypeOfView = styled.span`
+    font-weight: bold;
+    cursor: pointer;
+    color: #89BD8E;
+    &:hover{
+        color:#000;
+    }
+`
+
 const PokemonList = props => {
     const {
       fetchActionCreator,
@@ -123,7 +132,7 @@ const PokemonList = props => {
                                     <>
                                     {wantedPokemon.length===0?(
                                             <>
-                                                <p className="text-muted ml-3">View:.<span onClick={()=>setPaginated(false)}> Infinite </span>|<span onClick={()=>setPaginated(true)}> Paginated </span></p> 
+                                                <p className="text-muted ml-3">View:.<TypeOfView onClick={()=>setPaginated(false)}> Infinite </TypeOfView>|<TypeOfView onClick={()=>setPaginated(true)}> Paginated </TypeOfView></p> 
                                             </>)
                                         :(
                                             <>
