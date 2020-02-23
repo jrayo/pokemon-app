@@ -4,6 +4,7 @@ import { getId } from "../helpers/pokemonUtils";
 import styled from 'styled-components'
 import HomeButton from "./HomeButton";
 import Icon from "../img/icons/index"
+import ListItemLoader from "./ListItemLoader";
 
 const Container = styled.div`
     position:relative;
@@ -75,7 +76,7 @@ const IconContainer = styled.div`
 
 const DetailContainer = styled.div`
     position:relative;
-    left:10%;
+    left:7%;
     width:80vw;
     margin-top:3%;
     margin-bottom:3%;
@@ -152,7 +153,8 @@ const Title = styled.h6`
 
 function getPokemonDetail(id){
     return fetch("https://pokeapi.co/api/v2/pokemon/"+id)
-      .then(data => data.json()) //returning data from fetch
+      .then(data => data.json())
+      .catch(error=>console.log(error.response))
   }
 
 function getAbilityDetail(id){
@@ -162,28 +164,50 @@ function getAbilityDetail(id){
 
 const PokemonDetail = ({ id, name }) => {
     const [pokemonDetail, setPokemonDetail] = useState({})
+    const [isLoading, setIsLoading] = useState(true)
+    const [error, setError] = useState()
+
 
     useEffect(()=>{
         const pokemonPathId = getId(window.location.pathname)
-        getPokemonDetail(pokemonPathId).then((response)=>setPokemonDetail(response))
+        getPokemonDetail(pokemonPathId).then((response)=>{
+            setPokemonDetail(response)}
+            )
       },[])
 
     const [abilities, setAbilities] = useState([])
 
-      useEffect(()=>{
+    useEffect(()=>{
+        console.log(pokemonDetail)
+    },[pokemonDetail])
+    useEffect(()=>{
+        console.log(error)
+  },[error])
+
+    useEffect(()=>{
           if(pokemonDetail.abilities!==undefined){
               for(var i =0; i < pokemonDetail.abilities.length; i++){
                 getAbilityDetail(getId(pokemonDetail.abilities[i].ability.url)).then((response)=>setAbilities(oldArray => [...oldArray,response]))
               }
+              setIsLoading(false);
           }
-      },[pokemonDetail])
+    },[pokemonDetail])
 
-      useEffect(()=>{
-        console.log(abilities)
-    },[abilities])
+
+    if (_.isEmpty(pokemonDetail) && isLoading) return (<div className="text-center">
+    <div
+    className="spinner-border text-success"
+    style={{ width: "4rem", height: "4rem", position:"absolute", top:"50%"}}
+    role="status"
+        >
+        <span className="sr-only">Loading...</span>
+    </div>
+    </div>);
+    if (error) return <p>Error</p>;
 
   return (
         <Container className="container-fluid text-center">
+           
             <HomeButton />
             <PokemonId className="d-none d-md-block text-left">{pokemonDetail.id<100?'0':null}{pokemonDetail.id<10?'0':null}{pokemonDetail.id}</PokemonId>
             <PokemonIdMobile className="d-md-none text-left">{pokemonDetail.id<100?'0':null}{pokemonDetail.id<10?'0':null}{pokemonDetail.id}</PokemonIdMobile>
@@ -229,52 +253,43 @@ const PokemonDetail = ({ id, name }) => {
                             <StatsContainer className="container-fluid text-left">
                                 <Title>Basic Stats</Title>
                                 <div className="row">
-                                    <div className="col-4">
-                                        <span>Speed</span>               
-                                        <br/>
-                                        <span>Special Defense</span> 
-                                        <br/>
-
-                                        <span>Special Attack</span>
-                                        <br/>
-
-                                        <span>Defense</span>
-                                        <br/>
-
-                                        <span>Attack</span> 
-                                        <br/>
-
-                                        <span>Hp</span>
-                                    </div>
                                     
-                                    <div className="col-8">
-                                        <p className="progress">
-                                            <span className="progress-bar bg-danger" role="progressbar" style={{width: pokemonDetail.stats!==undefined?pokemonDetail.stats[0].base_stat+"%":'0'}} aria-valuenow={pokemonDetail.stats!==undefined?pokemonDetail.stats[0].base_stat:'0'} aria-valuemin="0" aria-valuemax="100">
-                                                {pokemonDetail.stats!==undefined?pokemonDetail.stats[0].base_stat+"%":'0'}
-                                            </span>
-                                        </p>
-                                        <p className="progress">
-                                            <span className="progress-bar bg-warning" role="progressbar" style={{width: pokemonDetail.stats!==undefined?pokemonDetail.stats[1].base_stat+"%":'0'}} aria-valuenow={pokemonDetail.stats!==undefined?pokemonDetail.stats[0].base_stat:'0'} aria-valuemin="0" aria-valuemax="100">
-                                                {pokemonDetail.stats!==undefined?pokemonDetail.stats[1].base_stat+"%":'0'}
-                                            </span>
-                                        </p>
-                                        <p className="progress">
-                                            <span className="progress-bar bg-warning" role="progressbar" style={{width: pokemonDetail.stats!==undefined?pokemonDetail.stats[2].base_stat+"%":'0'}} aria-valuenow={pokemonDetail.stats!==undefined?pokemonDetail.stats[0].base_stat:'0'} aria-valuemin="0" aria-valuemax="100">
-                                                {pokemonDetail.stats!==undefined?pokemonDetail.stats[2].base_stat+"%":'0'}
-                                            </span>
-                                        </p>
-                                        <p className="progress">
-                                            <span className="progress-bar bg-danger" role="progressbar" style={{width: pokemonDetail.stats!==undefined?pokemonDetail.stats[3].base_stat+"%":'0'}} aria-valuenow={pokemonDetail.stats!==undefined?pokemonDetail.stats[0].base_stat:'0'} aria-valuemin="0" aria-valuemax="100">
-                                                {pokemonDetail.stats!==undefined?pokemonDetail.stats[3].base_stat+"%":'0'}
-                                            </span>                                </p>
-                                        <p className="progress">
-                                            <span className="progress-bar bg-danger" role="progressbar" style={{width: pokemonDetail.stats!==undefined?pokemonDetail.stats[4].base_stat+"%":'0'}} aria-valuenow={pokemonDetail.stats!==undefined?pokemonDetail.stats[0].base_stat:'0'} aria-valuemin="0" aria-valuemax="100">
-                                                {pokemonDetail.stats!==undefined?pokemonDetail.stats[4].base_stat+"%":'0'}
-                                            </span>                                </p>
-                                        <p className="progress">
-                                            <span className="progress-bar bg-danger" role="progressbar" style={{width: pokemonDetail.stats!==undefined?pokemonDetail.stats[5].base_stat+"%":'0'}} aria-valuenow={pokemonDetail.stats!==undefined?pokemonDetail.stats[0].base_stat:'0'} aria-valuemin="0" aria-valuemax="100">
-                                                {pokemonDetail.stats!==undefined?pokemonDetail.stats[5].base_stat+"%":'0'}
-                                            </span>                                </p>
+                                    
+                                    <div className="col-12">
+
+                                                   
+                            {pokemonDetail.stats!==undefined? pokemonDetail.stats.map((stat, index, array)=>{
+                                let IdInArray = index
+                                var statValue = stat.base_stat;
+                                var progressBarColor = '';
+                                if(statValue<50){
+                                    progressBarColor = 'progress-bar bg-danger'
+                                }
+                                else if(statValue>=50 && statValue<75){
+                                    progressBarColor = 'progress-bar bg-warning'
+                                }
+                                else{
+                                    progressBarColor = 'progress-bar bg-success'
+                                }
+                                return(
+                                <React.Fragment key={IdInArray}>
+                                    <div className="container-fluid">
+                                        <div className="row">
+                                            <div className="col-md-2">
+                                            <h6 className="progress_title">{_.capitalize(stat.stat.name.replace('-',' '))}</h6>
+                                            </div>
+                                            <div className="col-md-10 align-self-center">
+                                            <span className="progress">
+                                                                                    <span className={progressBarColor} role="progressbar" style={{width: stat.base_stat+"%"}} aria-valuenow={stat.base_stat} aria-valuemin="0" aria-valuemax="100">
+                                                                                        {stat.base_stat}
+                                                                                    </span>
+                                                                                </span>
+                                            </div>
+                                        </div>  
+                                        </div>
+                                </React.Fragment>
+                                )}):null}
+
                                     </div>
                                 </div>                        
                             </StatsContainer>
@@ -327,9 +342,7 @@ const PokemonDetail = ({ id, name }) => {
                     <PokemonImage src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonDetail.id}.png`} alt={name} />
             </ImageContainerMobile>
 
-            
-           
-
+        
         </Container>    
   );
 };

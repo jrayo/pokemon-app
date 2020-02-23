@@ -7,20 +7,25 @@ import ListItemLoader from "./ListItemLoader";
 import PokemonListItem from "./PokemonListItem";
 import _ from "lodash";
 import HomeButton from "./HomeButton";
+import PokemonListPagination from "./PokemonListPagination"
 
 import axios from 'axios';
+import { getId } from '../helpers/pokemonUtils';
 
 const Container = styled.div`
-  width: 100vw;
-  height: 100vh;
-  background-color: #DEFAE9;
-  color: #89BD8E;
+    position:absolute;
+    width: 100vw;
+    height: 100vh;
+    background-color: #DEFAE9;
+    color: #89BD8E;
+    max-height: 100vh;
 `
 const PokemonContainer = styled.div`
     position:relative;
     top:20%;
     width: 100vw;
     height: 80vh;
+    max-height:80vh;
     overflow: auto;
     background-color: #DEFAE9;
 `
@@ -30,6 +35,7 @@ const SearchContainer = styled.div`
     padding:20px;
     max-width:1000px;
     width: 100vw;
+    overflow: hidden;
 `
 
 const PokemonListItemContainer = styled.div`
@@ -45,7 +51,7 @@ const PokemonCounterContainer = styled.div`
 
 const SearchBar = styled.input`
     width: 100%;
-    padding: 5px;
+    padding: 3px;
     background-color:#DEFAE9;
     border-style:groove;
     border-radius:50px;
@@ -77,7 +83,7 @@ const PokemonList = props => {
         if(totalPokemonCount.length!==0){
             let items = totalPokemonCount;
             items = items.filter((item)=>{
-                return item.name.toLowerCase().search(event.target.value.toLowerCase())!== -1;
+                return item.name.toLowerCase().search(event.target.value.toLowerCase())!== -1
             });
             if(items.length<=200){
                 setWantedPokemon(items)
@@ -87,192 +93,113 @@ const PokemonList = props => {
             }
         }
       };
-
-    const [pokemonPag, setPokemonPag] = useState([])
-    const [currentPageUrl, setCurrentPageUrl] = useState('https://pokeapi.co/api/v2/pokemon')
-    const [nextPageUrl, setNextPageUrl] = useState()
-    const [prevPageUrl, setPrevPageUrl] = useState()
-    const [loading, setLoading] = useState(true)
-
+    
+    const [paginated, setPaginated] = useState(false);
+    
     useEffect(() => {
         fetchActionCreator();
       }, []);
 
-      
-    useEffect(() => {
-        setLoading(true)
-        axios.get(currentPageUrl).then(response=>{
-            setLoading(false)
-            setNextPageUrl(response.data.next)
-            setPrevPageUrl(response.data.previous)
-            setPokemonPag(response.data.results.map(pokemon => pokemon))
-        })
-      }, [currentPageUrl]);
-
-
-      
-    useEffect(() => {
-        console.log(pokemonPag)
-      }, [pokemonPag]);
 
 
     if (_.isEmpty(pokemonList) && isLoading) return <ListItemLoader />;
     if (error) return <p>Error</p>;
     return (
-        <React.Fragment >
+        <React.Fragment>
             <Container className="d-flex justify-content-center">
-            <HomeButton />
+                   
+                <HomeButton />
                 <SearchContainer>
-                    <h6>Search Pokemons</h6> 
+                    <h6>Search Pokemon</h6> 
                     <form>
-                        <SearchBar type="text" placeholder="Search by name of pokemons" onChange={handleSearch} />
+                        <SearchBar type="text" placeholder="Search by name of pokemon" onChange={handleSearch} />
                     </form>
                 </SearchContainer>
-                
-                <PokemonCounterContainer className="d-flex justify-content-end">
-
-                    {
-                        (pokemonList!==undefined)? (
-                            <>
-                            {wantedPokemon.length===0?(
+                                
+                <PokemonCounterContainer className="d-flex justify-content-center">
+                        <div>
+                            {
+                                (pokemonListCount!==undefined)? (
                                     <>
-                                        <h6 className="text-muted ml-3">Displaying {pokemonList.length} pokemon of {totalPokemonCount.length}.</h6>
-                                    </>)
-                                :(
-                                    <>
-                                        <h6 className="text-muted ml-3">Displaying {wantedPokemon.length} pokemon of {totalPokemonCount.length}.</h6>
-                                    </>)
+                                    {wantedPokemon.length===0?(
+                                            <>
+                                                <p className="text-muted ml-3">View:.<span onClick={()=>setPaginated(false)}> Infinite </span>|<span onClick={()=>setPaginated(true)}> Paginated </span></p> 
+                                            </>)
+                                        :(
+                                            <>
+                                                <h6 className="text-muted ml-3">View: Infinite | Scrolling</h6>
+                                            </>)
+                                    }
+                                    </>
+                                )
+                                :null
                             }
-                            </>
-                        )
-                        :null
-                    }
-
-                    
+                        </div>
+                                        
                 </PokemonCounterContainer>
-
-
-                <PokemonContainer>
-
-                        <div className="container-fluid d-flex justify-content-center">
-                            <div className="row">
-
-                            </div>
-                            <PokemonListItemContainer className="row">
-                            
-                            {
-                                (pokemonList!==undefined)? (
-                                    <>
-                                    {wantedPokemon.length===0?(
+                {paginated? <PokemonListPagination wantedPokemon={wantedPokemon} />
+                    : (
+                        <PokemonContainer
+                            onScroll={handleScroll}>
+                                <div className="container-fluid d-flex justify-content-center">
+                                    
+                                    <PokemonListItemContainer className="row">
+                                    
+                                    {
+                                        (pokemonList!==undefined)? (
                                             <>
-                                                {pokemonList.map(pokemon => {
-                                                const { id, name } = pokemon;
+                                            {wantedPokemon.length===0?(
+                                                    <>
+                                                        {pokemonList.map(pokemon => {
+                                                        const { id, name } = pokemon;
+                                                                return (
+                                                                    <div key={pokemon.url} className="col-6 col-sm-4 col-md-3 d-flex justify-content-center">
+                                                                            <PokemonListItem className="card" id={id} name={name} />
+                                                                    </div>
+                                                                );
+                                                        })}
+                                                    </>)
+                                                :(
+                                                    <>
+                                                        {wantedPokemon.map(pokemon => {
+                                                        const { id, name } = pokemon;
                                                         return (
                                                             <div key={pokemon.url} className="col-6 col-sm-4 col-md-3 d-flex justify-content-center">
                                                                     <PokemonListItem className="card" id={id} name={name} />
                                                             </div>
-                                                        );
-                                                })}
-                                            </>)
-                                        :(
-                                            <>
-                                                {wantedPokemon.map(pokemon => {
-                                                const { id, name } = pokemon;
-                                                return (
-                                                    <div key={pokemon.url} className="col-6 col-sm-4 col-md-3 d-flex justify-content-center">
-                                                            <PokemonListItem className="card" id={id} name={name} />
-                                                    </div>
-                                                        );
-                                                })}
-                                            </>)
+                                                                );
+                                                        })}
+                                                    </>)
+                                            }
+                                            </>
+                                        )
+                                        :null
                                     }
-                                    </>
-                                )
-                                :null
-                            }
+                                    
+                                        
+                                    </PokemonListItemContainer>
+                                </div>
                             
-                                
-                            </PokemonListItemContainer>
-                        </div>
-                    
-                        {_.isEmpty(pokemonList) && <p>No results for this search</p>}
-                        
-                        {isLoading && (
-                            <div className="text-center">
-                            <div
-                                className="spinner-border"
-                                style={{ width: "4rem", height: "4rem" }}
-                                role="status"
-                            >
-                                <span className="sr-only">Loading...</span>
+                            {_.isEmpty(pokemonList) && <p>No results for this search</p>}
+                            
+                            {isLoading && (
+                                <div className="text-center">
+                                <div
+                                    className="spinner-border"
+                                    style={{ width: "4rem", height: "4rem" }}
+                                    role="status"
+                                >
+                                    <span className="sr-only">Loading...</span>
+                                </div>
                             </div>
-                        </div>
-                        )}
+                            )}
+                        </PokemonContainer>
 
-                </PokemonContainer>
-
-
-                 {/* 
-                <PokemonContainer
-                    onScroll={handleScroll}>
-                        <div className="container-fluid d-flex justify-content-center">
-                            <div className="row">
-
-                            </div>
-                            <PokemonListItemContainer className="row">
-                            
-                            {
-                                (pokemonList!==undefined)? (
-                                    <>
-                                    {wantedPokemon.length===0?(
-                                            <>
-                                                {pokemonList.map(pokemon => {
-                                                const { id, name } = pokemon;
-                                                        return (
-                                                            <div key={pokemon.url} className="col-6 col-sm-4 col-md-3 d-flex justify-content-center">
-                                                                    <PokemonListItem className="card" id={id} name={name} />
-                                                            </div>
-                                                        );
-                                                })}
-                                            </>)
-                                        :(
-                                            <>
-                                                {wantedPokemon.map(pokemon => {
-                                                const { id, name } = pokemon;
-                                                return (
-                                                    <div key={pokemon.url} className="col-6 col-sm-4 col-md-3 d-flex justify-content-center">
-                                                            <PokemonListItem className="card" id={id} name={name} />
-                                                    </div>
-                                                        );
-                                                })}
-                                            </>)
-                                    }
-                                    </>
-                                )
-                                :null
-                            }
-                            
-                                
-                            </PokemonListItemContainer>
-                        </div>
                     
-                    {_.isEmpty(pokemonList) && <p>No results for this search</p>}
-                    
-                    {isLoading && (
-                        <div className="text-center">
-                        <div
-                            className="spinner-border"
-                            style={{ width: "4rem", height: "4rem" }}
-                            role="status"
-                        >
-                            <span className="sr-only">Loading...</span>
-                        </div>
-                    </div>
-                    )}
-                </PokemonContainer>
-
+                    )
+                }
+                 
                 
-               */}
             </Container>
         </React.Fragment>
       )

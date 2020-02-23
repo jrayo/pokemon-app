@@ -7,7 +7,7 @@ const ButtonContainer = styled.div`
     display: flex;
     align-items: center;
     width:300px;
-    height:50px;
+    height:40px;
     top:0;
     left:0;
     background-color:#fff;
@@ -56,13 +56,13 @@ const HomeButton = ({ id, name }) => {
   return (
     <Link to="/">        
         <ButtonContainer className="align-middle">
-                <Pokeball />
-                <Title>
-                    <strong>
-                        Pokedex
-                    </strong>
-                </Title>
-            </ButtonContainer>    
+            <Pokeball />
+            <Title>
+                <strong>
+                    Pokedex
+                </strong>
+            </Title>
+        </ButtonContainer>    
     </Link>
         
   );

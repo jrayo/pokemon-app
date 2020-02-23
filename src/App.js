@@ -17,7 +17,7 @@ const store = configureStore();
 
 function App() {
   return (
-    <Router>
+    <Router basename="pokemon-app">
       <Provider store={store}>
         <div>
           {/* A <Switch> looks through its children <Route>s and
