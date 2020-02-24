@@ -16,8 +16,10 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Setup
 
-Git clone this repository.
+Git clone this repository or download directly.
+
 Install dependencies running `npm install` in the folder terminal
+
 Start developing running `npm start` in the terminal
 
 `npm start`
