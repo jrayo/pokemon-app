@@ -3,11 +3,10 @@
 
 ## Description
 
-Pokedex app made with React which consumppts data from PokeApi: https://pokeapi.co/docs/v2.html 
+Pokedex app developed with React. Data was fetched  from PokeApi: https://pokeapi.co/docs/v2.html 
 Pokemon's list has two types of views: infinite scrolling and paginated.
 
 ## Technologies
-
 
 This project has been developed with React, redux, using styled-components for styling and bootstrap 4.  
 
