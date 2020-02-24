@@ -1,5 +1,5 @@
 
-# Documentation of the Project
+# Pokemon App
 
 ## Description
 
