@@ -1,4 +1,21 @@
+
+# Documentation of the Project
+
+## Description
+
+Pokedex app made with React which consumppts data from PokeApi: https://pokeapi.co/docs/v2.html 
+Pokemon's list has two types of views: infinite scrolling and paginated.
+
+## Technologies
+
+
+This project has been developed with React, redux, using styled-components for styling and bootstrap 4.  
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+## Live Demo: https://jrayo.github.io/pokemon-app/
+
+### Git clone this repository and start developing mode with `npm start`
 
 ## Available Scripts
 
