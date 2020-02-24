@@ -22,8 +22,6 @@ Install dependencies running `npm install` in the folder terminal
 
 Start developing running `npm start` in the terminal
 
-`npm start`
-
 ## Available Scripts
 
 In the project directory, you can run:
