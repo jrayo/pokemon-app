@@ -132,11 +132,11 @@ const PokemonList = props => {
                                     <>
                                     {wantedPokemon.length===0?(
                                             <>
-                                                <p className="text-muted ml-3">View:.<TypeOfView onClick={()=>setPaginated(false)}> Infinite </TypeOfView>|<TypeOfView onClick={()=>setPaginated(true)}> Paginated </TypeOfView></p> 
+                                                <p className="text-muted ml-3">View:<TypeOfView onClick={()=>setPaginated(false)}> Infinite </TypeOfView>|<TypeOfView onClick={()=>setPaginated(true)}> Paginated </TypeOfView></p> 
                                             </>)
                                         :(
                                             <>
-                                                <h6 className="text-muted ml-3">View: Infinite | Scrolling</h6>
+                                                <p className="text-muted ml-3">View:<TypeOfView onClick={()=>setPaginated(false)}> Infinite </TypeOfView>|<TypeOfView onClick={()=>setPaginated(true)}> Paginated </TypeOfView></p> 
                                             </>)
                                     }
                                     </>
