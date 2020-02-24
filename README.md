@@ -14,7 +14,13 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Live Demo: https://jrayo.github.io/pokemon-app/
 
-### Git clone this repository and start developing mode with `npm start`
+## Setup
+
+Git clone this repository.
+Install dependencies running `npm install` in the folder terminal
+Start developing running `npm start` in the terminal
+
+`npm start`
 
 ## Available Scripts
 
